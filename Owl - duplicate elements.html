@@ -1,0 +1,97 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="./owl.carousel.css" rel="stylesheet">
+    <link href="./owl.theme.css" rel="stylesheet">
+    <style>
+        body, ul {
+            margin: 0;
+            padding: 0;
+            font-family: 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', 'DejaVu Sans Condensed', sans-serif;
+            font-size: 100%;
+        }
+
+        main {
+            margin: auto;
+            padding: 0;
+            position: relative;
+            overflow: hidden;
+            width: 400px;
+        }
+
+        .item {
+            display: block;
+            list-style: none;
+            background: #42bdc2;
+            padding: 100px 0px;
+            margin: 5px;
+            color: #FFF;
+            -webkit-border-radius: 1rem;
+            -moz-border-radius: 1rem;
+            border-radius: 1rem;
+            text-align: center;
+        }
+
+        /* Hide pages for duplicated infinite scroll elements */
+        .owl-pagination .owl-page:first-child,
+        .owl-pagination .owl-page:last-child {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <ul class="owl-carousel">
+            <li class="item">Item 4</li> <!--Duplicated last item-->
+            <li class="item">Item 1</li>
+            <li class="item">Item 2</li>
+            <li class="item">Item 3</li>
+            <li class="item">Item 4</li>
+            <li class="item">Item 1</li> <!--Duplicated first item-->
+        </ul>
+    </main>
+    <script src="./jquery-1.9.1.min.js"></script>
+    <script src="./owl.carousel.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var isJumping = false,
+                slideSpeed = 200,
+                elem = $(".owl-carousel"),
+                carousel = elem.owlCarousel({
+                    singleItem: true,
+                    pagination: true,
+                    navigation: true,
+                    slideSpeed: slideSpeed,
+                    afterMove: function () {
+                        if (isJumping) {
+                            return;
+                        }
+                        //Handle infinite scroll - jump to end
+                        if (carouselObject.currentItem === 0) {
+                            isJumping = true;
+                            setTimeout(function () {
+                                carouselObject.jumpTo(carouselObject.maximumItem - 1);
+                                isJumping = false;
+                            }, slideSpeed);
+                        }
+                        //Handle infinite scroll - jump to start
+                        else if (carouselObject.currentItem === carouselObject.maximumItem) {
+                            isJumping = true;
+                            setTimeout(function () {
+                                carouselObject.jumpTo(1);
+                                isJumping = false;
+                            }, slideSpeed);
+                        }
+                    }
+                }),
+            carouselObject = elem.data('owlCarousel');
+            carouselObject.jumpTo(1);
+        });
+    </script>
+</body>
+</html>
