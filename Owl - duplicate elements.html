@@ -62,6 +62,13 @@
             var isJumping = false,
                 slideSpeed = 200,
                 elem = $(".owl-carousel"),
+                jumpTo = function (index) {
+                    isJumping = true;
+                    setTimeout(function () {
+                        carouselObject.jumpTo(index);
+                        isJumping = false;
+                    }, slideSpeed);
+                },
                 carousel = elem.owlCarousel({
                     singleItem: true,
                     pagination: true,
@@ -73,19 +80,11 @@
                         }
                         //Handle infinite scroll - jump to end
                         if (carouselObject.currentItem === 0) {
-                            isJumping = true;
-                            setTimeout(function () {
-                                carouselObject.jumpTo(carouselObject.maximumItem - 1);
-                                isJumping = false;
-                            }, slideSpeed);
+                            jumpTo(carouselObject.maximumItem - 1);
                         }
-                        //Handle infinite scroll - jump to start
+                            //Handle infinite scroll - jump to start
                         else if (carouselObject.currentItem === carouselObject.maximumItem) {
-                            isJumping = true;
-                            setTimeout(function () {
-                                carouselObject.jumpTo(1);
-                                isJumping = false;
-                            }, slideSpeed);
+                            jumpTo(1);
                         }
                     }
                 }),
